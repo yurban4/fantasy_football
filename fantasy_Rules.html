@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>NFL Fantasy Punktevergabe – PPR-Modus</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #111827;
+      background: #f9fafb;
+    }
+    h1, h2, h3 {
+      color: #111827;
+    }
+    h1 {
+      border-bottom: 2px solid #111827;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+      background: #ffffff;
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    ul {
+      margin: 0.3rem 0 0.8rem 1.2rem;
+    }
+    strong {
+      font-weight: 600;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+    }
+    th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+      background: #f3f4f6;
+      padding: 0.1rem 0.25rem;
+      border-radius: 4px;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>NFL Fantasy Punktevergabe – PPR‑Modus (Points Per Reception)</h1>
+
+  <section>
+    <h2>1. Modus‑Erklärung (PPR)</h2>
+    <ul>
+      <li>Jede Reception gibt <strong>1 Punkt</strong>.</li>
+      <li>PPR bevorzugt Spieler mit vielen Targets (WR, Receiving‑RBs, TEs).</li>
+      <li>Alle anderen Kategorien bleiben identisch zum Standard‑Modus.</li>
+      <li>NFL.com bietet PPR als optionalen Modus an.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. Punktevergabe (PPR‑Modus)</h2>
+
+    <h3>Offensive Scoring</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Punkte</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Passing Yards</td><td>1 Punkt pro 25 Yards</td></tr>
+        <tr><td>Passing TD</td><td>4 Punkte</td></tr>
+        <tr><td>Interception</td><td>–2 Punkte</td></tr>
+        <tr><td>Rushing Yards</td><td>1 Punkt pro 10 Yards</td></tr>
+        <tr><td>Rushing TD</td><td>6 Punkte</td></tr>
+        <tr><td>Receiving Yards</td><td>1 Punkt pro 10 Yards</td></tr>
+        <tr><td>Receiving TD</td><td>6 Punkte</td></tr>
+        <tr><td><strong>Reception</strong></td><td><strong>1 Punkt</strong></td></tr>
+        <tr><td>Fumble Lost</td><td>–2 Punkte</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Kicker Scoring</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Punkte</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>PAT</td><td>1 Punkt</td></tr>
+        <tr><td>FG 0–39 Yards</td><td>3 Punkte</td></tr>
+        <tr><td>FG 40–49 Yards</td><td>4 Punkte</td></tr>
+        <tr><td>FG 50+ Yards</td><td>5 Punkte</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Defense / Special Teams Scoring</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Punkte</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Sack</td><td>1 Punkt</td></tr>
+        <tr><td>Interception</td><td>2 Punkte</td></tr>
+        <tr><td>Fumble Recovery</td><td>2 Punkte</td></tr>
+        <tr><td>Defensive TD</td><td>6 Punkte</td></tr>
+        <tr><td>Safety</td><td>2 Punkte</td></tr>
+        <tr><td>Points Allowed 0–6</td><td>10 Punkte</td></tr>
+        <tr><td>7–13</td><td>7 Punkte</td></tr>
+        <tr><td>14–20</td><td>4 Punkte</td></tr>
+        <tr><td>21–27</td><td>1 Punkt</td></tr>
+        <tr><td>28–34</td><td>–1 Punkt</td></tr>
+        <tr><td>35+</td><td>–4 Punkte</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. Beispielrechnung (PPR‑Modus)</h2>
+
+    <p>Ein Spieler erzielt:</p>
+    <ul>
+      <li>250 Passing Yards</li>
+      <li>2 Passing TD</li>
+      <li>1 Interception</li>
+      <li>40 Rushing Yards</li>
+      <li>1 Rushing TD</li>
+      <li>20 Receiving Yards</li>
+      <li>2 Receptions</li>
+      <li>1 Fumble Lost</li>
+    </ul>
+
+    <h3>Berechnung</h3>
+    <p><strong>Passing:</strong><br>
+      250 / 25 = 10 Punkte<br>
+      2 TD = 8 Punkte<br>
+      1 INT = –2 Punkte<br>
+      → <strong>16 Punkte</strong>
+    </p>
+
+    <p><strong>Rushing:</strong><br>
+      40 / 10 = 4 Punkte<br>
+      1 TD = 6 Punkte<br>
+      → <strong>10 Punkte</strong>
+    </p>
+
+    <p><strong>Receiving:</strong><br>
+      20 / 10 = 2 Punkte<br>
+      2 Receptions = 2 Punkte<br>
+      → <strong>4 Punkte</strong>
+    </p>
+
+    <p><strong>Turnovers:</strong><br>
+      1 Fumble Lost = –2 Punkte
+    </p>
+
+    <p><strong>Gesamtpunkte (PPR):</strong><br>
+      16 + 10 + 4 – 2 = <strong>28 Fantasy‑Punkte</strong>
+    </p>
+  </section>
+
+  <section>
+    <h2>4. Roster‑Struktur deiner Liga</h2>
+    <ul>
+      <li><strong>1 QB</strong></li>
+      <li><strong>2 RB</strong></li>
+      <li><strong>2 WR</strong></li>
+      <li><strong>1 TE</strong></li>
+      <li><strong>1 FLEX (RB oder WR)</strong></li>
+      <li><strong>1 Kicker</strong></li>
+      <li><strong>1 Defense/Special Teams</strong></li>
+      <li><strong>5–6 Bench‑Spieler</strong> <span class="note">(Bench‑Spieler sammeln keine Punkte)</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Offizielle Quelle</h2>
+    <p>
+      NFL.com Fantasy Scoring Regeln (Support‑Artikel):<br>
+      <a href="https://support.nfl.com/hc/en-us/articles/35869730981140-Scoring" target="_blank" rel="noopener">
+        https://support.nfl.com/hc/en-us/articles/35869730981140-Scoring
+      </a>
+    </p>
+  </section>
+
+</body>
+</html>
