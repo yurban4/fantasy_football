@@ -1,26 +1,13 @@
-from Package_NFL_ML import FeatureBuilder
+import nflreadpy as nfl
+import polars as pl
+import numpy as np
 
-pbp = (
-    PlayByPlayBuilder()
-    .load(seasons=[2024, 2025])
-    .add_epa()
-    .add_success()
-    .add_proe()
-    .add_pressure()
-    .add_coverage()
-    .add_box_advantage()
-    .add_motion()
-    .add_pace()
-    .aggregate_player_level()
-)
+seasons = [2022, 2023,2024, 2025,2026]
 
-df = (
-    FeatureBuilder()
-    .load(seasons=2025)
-    .add_fantasy_rolling()
-    .add_expected_fantasy_points()
-    .add_position_encoding()
-    .merge_pbp(pbp.player_df)   # <-- jetzt korrekt!
-    .build()
-)
-print(df)
+df = nfl.load_pfr_advstats(
+        seasons=seasons,
+        stat_type="def",
+        summary_level="week"
+    )
+
+print(df.columns)
