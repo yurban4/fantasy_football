@@ -2,7 +2,7 @@ import nflreadpy as nfl
 import polars as pl
 import numpy as np
 
-seasons = [2022, 2023,2024, 2025,2026]
+seasons = [2022, 2023,2024, 2025, 2026]
 df_qb = (
     nfl.load_pfr_advstats( # PFR Passing Stats
         seasons=seasons,
@@ -62,4 +62,4 @@ df_qb = df_qb.with_columns(
 )
 
 print(df_qb)
-df_qb.write_csv("advstats_2026.csv", decimal_comma=True, separator=";")
+df_qb.write_csv("data/raw/qb_dataset.csv", decimal_comma=True, separator=";")

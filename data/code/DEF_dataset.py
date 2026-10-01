@@ -45,4 +45,4 @@ df_def = df_def.with_columns(
 
 
 print(df_def)
-#df_qb.write_csv("advstats_2026.csv", decimal_comma=True, separator=";")
+df_def.write_csv("data/raw/def_stats.csv", decimal_comma=True, separator=";")
