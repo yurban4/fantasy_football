@@ -38,7 +38,7 @@ class MarkdownReport:
         self.lines.append(f"> {text}\n")
 
     def save(self):
-        self.output_dir.mkdir(exist_ok=False)
+        self.output_dir.mkdir(exist_ok=True)
         file_path = self.output_dir / f"week_{self.week}.md"
         file_path.write_text("\n".join(self.lines), encoding="utf-8")
         return file_path

@@ -4,9 +4,6 @@ import numpy as np
 
 seasons = [2022, 2023,2024, 2025,2026]
 
-import polars as pl
-import nflreadpy as nfl
-
 def build_team_game_table(seasons):
     sched = nfl.load_schedules(seasons=seasons)
 
