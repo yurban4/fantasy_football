@@ -2,7 +2,7 @@ name: Build Fantasy Summary and Deploy to Pages
 
 on:
   schedule:
-    - cron: "0 12 * * TUE"   # jeden Dienstag
+    - cron: "0 12 * * WED"   # jeden Dienstag
   workflow_dispatch:
 
 permissions:
