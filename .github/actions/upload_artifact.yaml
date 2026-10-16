@@ -2,7 +2,7 @@ name: Build Fantasy Summary Reports
 
 on:
   schedule:
-    - cron: '22 35 * * 5' # Runs every Monday at midnight
+    - cron: '50 20 * * 5' # Runs every Monday at midnight
 
 jobs:
   build:

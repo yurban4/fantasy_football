@@ -273,4 +273,4 @@ def generate_report(week: int):
     print(f"Report gespeichert unter: reports/week_{week}.pdf")
 
 
-generate_report(week=2)
+generate_report(week=5)
