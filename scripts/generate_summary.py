@@ -4,8 +4,6 @@ import numpy as np
 import nflreadpy as nfl
 import matplotlib.pyplot as plt
 from pathlib import Path
-import polars as pl
-import ff_functions as ff
 import os
 import requests
 
@@ -147,11 +145,8 @@ def generate_kicker_performance_report(week: int):
         ("BACKGROUND", (0,0), (-1,0), colors.lightgrey),
         ("GRID", (0,0), (-1,-1), 0.5, colors.grey),
         ("VALIGN", (0,1), (-1,-1), "MIDDLE"),
-        # komplette Tabelle inkl. Kopfzeile zentrieren
-        ("ALIGN", (0,0), (-1,-1), "CENTER"),
-
-        # erste zwei Spalten explizit zentrieren
-        ("ALIGN", (0,0), (1,-1), "LEFT"),
+        ("ALIGN", (0,0), (-1,-1), "CENTER"), # komplette Tabelle inkl. Kopfzeile zentrieren
+        ("ALIGN", (0,0), (1,-1), "LEFT"), # erste zwei Spalten explizit nach links
     ]))
     return table
 #__________________________________________________________________________________________________
@@ -276,5 +271,6 @@ def generate_report(week: int):
     doc.afterFlowable = add_toc_entry.__get__(doc)
     doc.build(story)
     print(f"Report gespeichert unter: reports/week_{week}.pdf")
+
 
 generate_report(week=2)

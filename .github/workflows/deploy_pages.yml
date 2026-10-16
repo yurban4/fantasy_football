@@ -1,14 +1,16 @@
-name: Build Fantasy Summary and Deploy to Pages
+name: Build Fantasy Summary Reports
 
 on:
   schedule:
+<<<<<<< HEAD
     - cron: "0 12 * * WED"   # jeden Dienstag
+=======
+    - cron: "0 22 * * TUE"   # jeden Dienstag 22:00
+>>>>>>> de283e8 (create pdf in github)
   workflow_dispatch:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -21,42 +23,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Generate summary
-        run: python scripts/generate_summary.py
-
-      - name: Copy markdown into site folder
         run: |
-          mkdir -p site
-          cp summaries/*.md site/
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Create index.html
+      - name: Build PDF Reports
         run: |
-          echo "<html><body><h1>Fantasy Summaries</h1><ul>" > site/index.html
-          for f in site/*.md; do
-            base=$(basename "$f" .md)
-            pandoc "$f" -f markdown -t html -o "site/${base}.html"
-            echo "<li><a href='${base}.html'>${base}</a></li>" >> site/index.html
-          done
-          echo "</ul></body></html>" >> site/index.html
+          python build_summary.py
+        # Deine PDFs müssen in ./reports/pdf liegen
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
         with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          name: fantasy-summary-pdfs
+          path: ./reports/pdf
