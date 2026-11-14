@@ -1,11 +1,12 @@
 import polars as pl
-import ff_functions as ff
-import numpy as np
 import nflreadpy as nfl
-import matplotlib.pyplot as plt
-from pathlib import Path
 import os
 import requests
+from reports.qb import generate_qb_performance_table, generate_qb_season_ff, generate_qb_ff_plots
+from reports.kicker import generate_kicker_performance_table
+from reports.defense import generate_defense_performance_table
+from reports.rb import generate_rb_ff_plots, generate_rb_performance_table, generate_rb_season_ff
+from reports.wr_te import generate_wr_te_performance_table
 
 from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer
 from reportlab.platypus import Table, TableStyle, Image, PageBreak
@@ -34,7 +35,6 @@ def download_image(url, filename="headshot.jpg"):
     with open(filename, "wb") as f:
         f.write(r.content)
     return filename
-
 
 def build_matchup_table(week: int):
     # Beispiel: deine Matchup-Daten
@@ -112,44 +112,6 @@ def add_page_number(canvas, doc):
     )
 
 #__________________________________________________________________________________________________
-# Performance Report Functions
-def generate_qb_performance_report(week: int):
-    qb_stats = ff.get_qb_stats()
-    qb_stats = qb_stats.filter(pl.col("week") == week)
-    return qb_stats
-
-def generate_kicker_performance_report(week: int):
-    kick_stats = ff.get_kick_stats()
-    kick_stats = kick_stats.filter(pl.col("week") == week).sort(pl.col("ff_points_total"), descending=True)
-    print(kick_stats)
-    table_data = [
-        ["Kicker", "Team", "ff PAT (1)", "ff FG Short (3)", "ff FG Middle (4)", "ff FG Long (5)", "ff_points_total"]
-    ]
-    for i in range(10):
-        row = kick_stats[i]
-        kicker = row["short_name"].item()
-        team = row["team"].item()
-        ff_pat = row["ff_points_pat"].item()
-        ff_short = row["ff_points_fg_0_39"].item()
-        ff_middle = row["ff_points_fg_40_49"].item()
-        ff_long = row["ff_points_fg_50_"].item()
-        ff_total = row["ff_points_total"].item()
-        table_data.append([kicker, team, ff_pat, ff_short, ff_middle, ff_long, ff_total])
-    table = Table(
-            table_data,
-            colWidths=[3*cm, 1.5*cm, 2.5*cm, 3*cm, 3*cm, 2.5*cm, 3*cm],
-            rowHeights=[1.2*cm] * len(table_data)
-        )
-    
-    table.setStyle(TableStyle([
-        ("BACKGROUND", (0,0), (-1,0), colors.lightgrey),
-        ("GRID", (0,0), (-1,-1), 0.5, colors.grey),
-        ("VALIGN", (0,1), (-1,-1), "MIDDLE"),
-        ("ALIGN", (0,0), (-1,-1), "CENTER"), # komplette Tabelle inkl. Kopfzeile zentrieren
-        ("ALIGN", (0,0), (1,-1), "LEFT"), # erste zwei Spalten explizit nach links
-    ]))
-    return table
-#__________________________________________________________________________________________________
 
 def generate_report(week: int):
     def add_toc_entry(self, flowable):
@@ -214,8 +176,20 @@ def generate_report(week: int):
 
     # --- Kapitel 2 --- QB 
     story.append(Paragraph(f"{chapter_no}. <b>QB Performance</b>", styles["Heading2"]))
+    story.append(Paragraph(f"{chapter_no}.1 <b>QB Matchday Performance</b>", styles["Heading3"]))
     sections.append((chapter_no, "QB Performance", current_page))
-    #story.append(generate_qb_performance_report(week))
+    story.append(generate_qb_performance_table(week))
+    story.append(PageBreak())
+    current_page += 1
+
+    story.append(Paragraph(f"{chapter_no}.2 <b>QB Season Performance</b>", styles["Heading3"]))
+    sections.append((chapter_no, "QB Season Performance", current_page))
+    generate_qb_season_ff(week)
+    generate_qb_ff_plots(week)
+    story.append(Image(f"plots/qb/qb_season_performance_week_{week}.png", width=16*cm, height=9*cm))
+    story.append(Spacer(1, 20))
+    story.append(Paragraph("Abbildung: Kumulierte Fantasy-Punkte der Top-QBs über die Saison hinweg.", styles["BodyText"]))
+    story.append(Image(f"plots/qb/qb_ff_plots_week_{week}.png", width=16*cm, height=9*cm))
     story.append(PageBreak())
     current_page += 1
     chapter_no += 1
@@ -223,6 +197,19 @@ def generate_report(week: int):
     # --- Kapitel 3 --- RB 
     story.append(Paragraph(f"{chapter_no}. <b>RB Performance</b>", styles["Heading2"]))
     sections.append((chapter_no, "RB Performance", current_page))
+    story.append(generate_rb_performance_table(week))
+    story.append(PageBreak())
+    current_page += 1
+    chapter_no += 1
+
+    story.append(Paragraph(f"{chapter_no}.2 <b>RB Season Performance</b>", styles["Heading3"]))
+    sections.append((chapter_no, "RB Season Performance", current_page))
+    generate_rb_season_ff(week)
+    generate_rb_ff_plots(week)
+    story.append(Image(f"plots/rb/rb_season_performance_week_{week}.png", width=16*cm, height=9*cm))
+    story.append(Spacer(1, 20))
+    story.append(Paragraph("Abbildung: Kumulierte Fantasy-Punkte der Top-RBs über die Saison hinweg.", styles["BodyText"]))
+    story.append(Image(f"plots/rb/rb_ff_plots_week_{week}.png", width=16*cm, height=9*cm))
     story.append(PageBreak())
     current_page += 1
     chapter_no += 1
@@ -230,6 +217,7 @@ def generate_report(week: int):
     # --- Kapitel 4 --- WR/TE 
     story.append(Paragraph(f"{chapter_no}. <b>WR/TE Performance</b>", styles["Heading2"]))
     sections.append((chapter_no, "WR/TE Performance", current_page))
+    story.append(generate_wr_te_performance_table(week))
     story.append(PageBreak())
     current_page += 1
     chapter_no += 1
@@ -237,7 +225,7 @@ def generate_report(week: int):
     # --- Kapitel 5 --- Kicker
     story.append(Paragraph(f"{chapter_no}. <b>Kicker Performance</b>", styles["Heading2"]))
     sections.append((chapter_no, "Kicker Performance", current_page))
-    story.append(generate_kicker_performance_report(week))
+    story.append(generate_kicker_performance_table(week))
     story.append(PageBreak())
     current_page += 1
     chapter_no += 1
@@ -245,9 +233,10 @@ def generate_report(week: int):
     # --- Kapitel 6 --- Defense
     story.append(Paragraph(f"{chapter_no}. <b>Defense Performance</b>", styles["Heading2"]))
     sections.append((chapter_no, "Defense Performance", current_page))
+    story.append(generate_defense_performance_table(week))
     story.append(PageBreak())
     current_page += 1
-
+    chapter_no += 1
 
     # -----------------------------------------
     # 3) TOC erzeugen (als Tabelle)
@@ -272,5 +261,4 @@ def generate_report(week: int):
     doc.build(story)
     print(f"Report gespeichert unter: reports/week_{week}.pdf")
 
-
-generate_report(week=5)
+generate_report(week=7)
